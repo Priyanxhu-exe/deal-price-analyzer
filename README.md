@@ -1,44 +1,54 @@
-Deal Price Analyzer
+# Deal Price Analyzer
 
-I'm building this to learn pandas, matplotlib, and eventually scikit-learn by working on a project I'd actually use, instead of following disconnected tutorials. The idea is simple: compare a set of deal prices and get the average, median, lowest, and highest — but do it properly, from an Excel sheet, instead of typing prices in one by one.
+I'm building this to learn pandas, matplotlib, and eventually scikit-learn by working on a project I'd actually use, instead of following disconnected tutorials. The idea is to compare deal prices from multiple sellers for the same item, and see at a glance which one is the best price.
 
-How it works
+## How it works
 
-Run the script. It asks for two things:
+Run the script. It asks for three things:
 
+1. The path to your Excel file (e.g. `deals.xlsx`, or a full path if it's elsewhere). Leave it blank and it defaults to `sample_sellers.xlsx`, included in this repo.
+2. The column header that holds your prices. Leave it blank and it defaults to `Price`.
+3. The column header that holds the seller/source name. Leave it blank and it defaults to `Seller`.
 
-The path to your Excel file (e.g. deals.xlsx, or a full path if it's elsewhere). Leave it blank and it defaults to sample_deals.xlsx, included in this repo.
-The column header that holds your prices. Leave it blank and it defaults to Price.
+It prints the median, lowest, and highest price, then generates a bar chart comparing every seller, sorted from cheapest to most expensive. The cheapest seller is highlighted, and a dashed line marks the median price so you can see at a glance which sellers are above or below typical price.
 
+I'm using median instead of average as the reference point, since a single unusually high or low price can skew an average in a way that's misleading — median holds up better against that.
 
-It then prints the average, median, lowest, and highest price from that column.
+If the file doesn't exist or a column name is wrong, it tells you clearly instead of crashing, and shows you the column names it actually found.
 
-If the file doesn't exist or the column name is wrong, it tells you clearly instead of crashing — and if the column name is wrong, it also shows you the column names it actually found.
+### Expected Excel format
 
-Expected Excel format
+| Seller   | Price |
+|----------|-------|
+| Amazon   | 1200  |
+| Flipkart | 1150  |
+| Meesho   | 980   |
 
-| Deal   | Price |
-|--------|-------|
-| Deal A | 1200  |
-| Deal B | 1350  |
-| Deal C | 980   |
+`sample_sellers.xlsx` in this repo follows this format, so it's a good first thing to run before using your own data.
 
-sample_deals.xlsx in this repo follows this format, so it's a good first thing to run before using your own data.
+## Requirements
 
-Requirements
+```
+pip install pandas openpyxl matplotlib
+```
 
-pip install pandas openpyxl
+## Usage
 
-Usage
-
+```
 analyzer.py
+```
 
-Where this is at
+## Where this is at
 
-v0.1 was the first working version — manual input through the terminal, stats from Python's statistics module. v0.2 is the current version: it reads from Excel using pandas, and the file path and column name are entered at runtime instead of hardcoded, with basic error handling around both.
+v0.1 was the first working version — manual input through the terminal, stats from Python's `statistics` module. v0.2 moved to pandas, reading prices from an Excel file with the file path and column name entered at runtime, plus basic error handling. v0.3 added a matplotlib bar chart on top of that. This version refines the chart: it compares sellers specifically, sorts by price, highlights the cheapest option, and uses median instead of average as the reference line.
 
-Next, I'm adding graphs with matplotlib, then looking at basic price prediction with scikit-learn once that's solid.
+## What's next
 
-License
+A few directions I'm considering:
+- Factoring in seller rating alongside price, so the cheapest option isn't always the one recommended if it's from an unreliable seller
+- Tracking price over time for the same item, which would need a date column and a line chart instead of a bar chart — a genuinely different use case from comparing sellers at a single point in time
+- Eventually pulling in real price data instead of manually entered Excel sheets, and using scikit-learn for basic price prediction once there's a real trend to learn from
+
+## License
 
 Not decided yet.
