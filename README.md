@@ -35,7 +35,7 @@ pip install pandas openpyxl matplotlib
 ## Usage
 
 ```
-analyzer.py
+python analyzer.py
 ```
 
 ## Where this is at
@@ -45,9 +45,12 @@ v0.1 was the first working version — manual input through the terminal, stats 
 ## What's next
 
 A few directions I'm considering:
-- Factoring in seller rating alongside price, so the cheapest option isn't always the one recommended if it's from an unreliable seller
-- Tracking price over time for the same item, which would need a date column and a line chart instead of a bar chart — a genuinely different use case from comparing sellers at a single point in time
-- Eventually pulling in real price data instead of manually entered Excel sheets, and using scikit-learn for basic price prediction once there's a real trend to learn from
+
+- **Benchmark against a market reference price, not just other sellers.** Got this idea from someone who actually trades — for commodities/metals, the LME (London Metal Exchange) publishes a daily reference price, and every seller's price only really means something relative to that benchmark. Right now my chart only compares sellers to each other, which doesn't say whether *all* of them are overpriced that day. Adding a reference price column would fix that.
+- **Margin column** — `Price - Reference Price` for each seller. This is a better "who's overcharging" signal than just flagging the highest raw price, since it accounts for the day's actual market conditions instead of comparing sellers in isolation.
+- **Seller trade history** — track how a seller's prices have trended with past deals, not just their price today. This is basically the "reliability" idea I had earlier (factoring in rating alongside price), except based on actual trade history instead of a subjective rating — which is more useful and more realistic for how this kind of decision actually gets made.
+- Tracking price over time for the same item, which would need a date column and a line chart instead of a bar chart — a genuinely different use case from comparing sellers at a single point in time.
+- Eventually pulling in real price data instead of manually entered Excel sheets, and using scikit-learn for basic price prediction once there's a real trend to learn from.
 
 ## License
 
