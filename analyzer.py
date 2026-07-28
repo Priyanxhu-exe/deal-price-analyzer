@@ -127,9 +127,9 @@ else:
     min_idx = prices.idxmin()
     max_idx = prices.idxmax()
     ax.annotate(f"Lowest: {lowest_price:.0f}", xy=(dates[min_idx], prices[min_idx]),
-                xytext=(0, -15), textcoords="offset points", ha="center", fontsize=8, color="dimgray")
+                xytext=(0, -10), textcoords="offset points", ha="center", fontsize=8, color="dimgray")
     ax.annotate(f"Highest: {highest_price:.0f}", xy=(dates[max_idx], prices[max_idx]),
-                xytext=(0, 8), textcoords="offset points", ha="center", fontsize=8, color="dimgray")
+                xytext=(0, 4), textcoords="offset points", ha="center", fontsize=8, color="dimgray")
 
     ax.set_title(f"{price_column} Trend Over Time")
     ax.set_xlabel(date_column)
