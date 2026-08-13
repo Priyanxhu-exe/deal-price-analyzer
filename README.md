@@ -1,47 +1,131 @@
 # Deal Price Analyzer
 
-I'm building this to learn pandas, matplotlib, and eventually scikit-learn by working on a project I'd actually use, instead of following disconnected tutorials. It's grown into two things in one script now: comparing prices across sellers for the same item, and tracking how one seller's price moves over time.
+I'm building this to learn pandas, Plotly, Streamlit, and eventually scikit-learn by working on a project I'd actually use, instead of following disconnected tutorials. It started as a terminal script for comparing prices, and has gradually turned into an interactive dashboard for exploring commodity and supplier pricing data.
+
+## Screenshot
+
+![Dashboard Screenshot](screenshots/dashboard.png)
 
 ## How it works
 
-Run the script. First it asks which mode:
+Run the Streamlit app and upload an Excel file. The dashboard currently supports two analysis modes:
 
-- **1 — Seller comparison.** Compares prices across sellers at one point in time, against a base price you type in.
-- **2 — Price trend.** Tracks one seller's price across multiple dates as a line chart.
+* **Seller Comparison** — Compare prices across multiple sellers against a base price.
+* **Price Trend** — Track how a price changes over time and explore the distribution of those prices.
 
-**Mode 1** asks for the Excel file, a base price to compare against, and the price/seller column names (all have defaults if you just hit enter). It prints median, lowest, highest, then a bar chart sorted cheapest to most expensive, with each bar labeled with its price and how far above or below the base price it is. I went with median over average here — one weirdly high or low price skews an average in a way that's misleading, median holds up better.
+### Seller Comparison
 
-**Mode 2** asks for the file and the price/date columns, then plots a line chart over time with the lowest and highest points called out directly on the chart. You can hover over any point to see the exact date and price.
+Upload an Excel file containing seller and price data.
 
-Both modes handle a missing file or a typo'd column name without crashing — they tell you what went wrong and show you what columns actually exist.
+The dashboard:
 
-### Sample files included
+* Calculates median, lowest, and highest prices.
+* Calculates margin percentage against a base price.
+* Sorts sellers from cheapest to most expensive.
+* Displays an interactive Plotly bar chart.
+* Color-codes sellers based on how far they are from the base price.
+* Includes a separate margin breakdown chart.
+* Shows the underlying data in a sortable table.
 
-`sample_sellers.xlsx` — Seller / Price, for mode 1
-`amazon_price_history.xlsx` — Seller / Date / Price, for mode 2
+I still use the median rather than the average here. One unusually high or low price can distort an average significantly, while the median tends to give a more realistic picture of the market.
+
+### Price Trend
+
+Upload an Excel file containing dates and prices.
+
+The dashboard:
+
+* Converts and sorts dates automatically.
+* Calculates median, lowest, and highest prices.
+* Displays an interactive time-series chart.
+* Highlights the lowest and highest recorded prices.
+* Supports an optional moving average.
+* Includes a price distribution histogram.
+* Includes a box plot for quick outlier detection.
+* Shows the processed data in a table.
+
+All charts are interactive and support hover tooltips for inspecting exact values.
+
+### Error Handling
+
+The app handles:
+
+* Missing files.
+* Invalid Excel files.
+* Missing columns.
+* Incorrect column names.
+
+Instead of crashing, it explains the problem and shows the available columns where possible.
+
+## Sample files
+
+Currently using manually prepared Excel files during development.
+
+Planned:
+
+* `sample_sellers.xlsx`
+* `sample_price_history.xlsx`
+
+so the dashboard can be tested immediately after cloning.
 
 ## Requirements
 
-```
-pip install pandas openpyxl matplotlib mplcursors
+```bash
+pip install streamlit pandas openpyxl plotly
 ```
 
 ## Usage
 
-```
-python analyzer.py
+```bash
+streamlit run app.py
 ```
 
 ## Where this is at
 
-v0.1 was manual terminal input and Python's `statistics` module. v0.2 moved to pandas for Excel input. v0.3 added a matplotlib bar chart. This version split into the two modes, added the base price / margin comparison to mode 1, and added the hover tooltip to mode 2 using mplcursors.
+### v0.1
+
+* Manual terminal input.
+* Python `statistics` module.
+
+### v0.2
+
+* Moved to pandas.
+* Excel file input.
+
+### v0.3
+
+* Added Matplotlib visualizations.
+
+### v0.4
+
+* Split into Seller Comparison and Price Trend modes.
+* Added margin analysis.
+* Added hover tooltips.
+
+### Current Version
+
+* Migrated from terminal application to Streamlit.
+* Rebuilt visualizations using Plotly.
+* Added interactive dashboard UI.
+* Added moving averages.
+* Added distribution analysis using histograms and box plots.
+* Added improved error handling and data exploration tools.
 
 ## What's next
 
-Talked to someone in my family who trades commodities professionally, and got a few real ideas out of it — mainly that prices should be benchmarked against something like the LME (London Metal Exchange) reference price instead of just a number I type in myself, and that seller trade history over time matters more than a single day's price. That second one needs `groupby` in pandas, which I haven't properly used yet.
+A few ideas are already on the list:
 
-After that: scikit-learn for basic price prediction once there's a real trend to learn from, and probably wrapping this in Streamlit so it's an actual small app instead of a terminal script.
+* Better column selection using dropdown menus instead of manual text entry.
+* Sample datasets bundled with the project.
+* Exporting filtered results and reports.
+* Benchmarking against reference market prices instead of a manually entered base price.
+* Seller performance tracking over time.
+* More advanced pandas analysis using `groupby`.
+* Scikit-learn experiments for basic forecasting once enough historical data exists.
+
+The longer-term goal is still the same: learn data analysis and machine learning by building something useful instead of treating each library as a separate tutorial.
 
 ## License
 
 Not decided yet.
+
